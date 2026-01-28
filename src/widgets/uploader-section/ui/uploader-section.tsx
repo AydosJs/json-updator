@@ -1,4 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
+import { Plus } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@/shared/ui/button'
 import { useUploadFiles } from '@/features/upload-files'
 import { t } from '@/shared/lib/i18n'
@@ -45,11 +47,41 @@ export function UploaderSection() {
     document.getElementById('file-input')?.click()
   }, [])
 
+  const [isStarting, setIsStarting] = useState(false)
+  const navigate = useNavigate()
+
+  const handleStart = useCallback(async () => {
+    const valid = files.filter((f) => !f.error)
+    if (valid.length === 0) return
+    setIsStarting(true)
+    try {
+      const localeFiles: Array<{ name: string; data: Record<string, unknown> }> = []
+      for (const { file } of valid) {
+        const text = await file.text()
+        const data = JSON.parse(text) as Record<string, unknown>
+        localeFiles.push({ name: file.name, data })
+      }
+      navigate({ to: '/playground', state: { localeFiles } })
+    } catch {
+      setIsStarting(false)
+    }
+  }, [files, navigate])
+
   return (
     <>
+      <input
+        id="file-input"
+        type="file"
+        accept=".json,application/json"
+        multiple
+        className="sr-only"
+        onChange={handleInputChange}
+        aria-label={t('uploader.browse')}
+      />
       <div
         role="button"
         tabIndex={0}
+        onDragEnter={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -60,19 +92,12 @@ export function UploaderSection() {
           }
         }}
         className={cn(
-          'rounded-lg border-2 border-dashed border-input bg-muted/30 px-6 py-10 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          isDragging && 'border-primary bg-accent/50'
+          'cursor-pointer rounded-lg border-2 border-dashed border-border-medium bg-muted/30 px-6 py-10 text-center transition-colors',
+          'hover:border-primary/40 hover:bg-muted/50',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+          isDragging && 'cursor-copy border-primary/70 bg-accent/50'
         )}
       >
-        <input
-          id="file-input"
-          type="file"
-          accept=".json,application/json"
-          multiple
-          className="sr-only"
-          onChange={handleInputChange}
-          aria-label={t('uploader.browse')}
-        />
         <p className="text-muted-foreground text-sm">{t('uploader.dropHint')}</p>
         <Button
           type="button"
@@ -94,7 +119,7 @@ export function UploaderSection() {
             {files.map(({ file, error }, index) => (
               <li
                 key={`${file.name}-${index}`}
-                className="flex items-center justify-between gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm"
+                className="flex items-center justify-between gap-2 rounded-md bg-card/80 px-3 py-2 text-sm"
               >
                 <span className="min-w-0 truncate font-medium" title={file.name}>
                   {file.name}
@@ -123,10 +148,21 @@ export function UploaderSection() {
             type="button"
             variant="outline"
             size="sm"
-            className="mt-4 w-full sm:w-auto"
+            className="mt-4 w-full cursor-pointer"
             onClick={openFileInput}
+            aria-label={t('uploader.addMore')}
           >
-            {t('uploader.addMore')}
+            <Plus className="size-4" aria-hidden />
+          </Button>
+          <Button
+            type="button"
+            variant="default"
+            size="lg"
+            className="mt-4 w-full"
+            onClick={handleStart}
+            disabled={isStarting || files.some((f) => f.error)}
+          >
+            {isStarting ? '...' : t('uploader.start')}
           </Button>
         </section>
       )}

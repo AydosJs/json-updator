@@ -66,6 +66,9 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-subtle: color-mix(in oklch, var(--border) 25%, transparent);
+  --color-border-muted: color-mix(in oklch, var(--border) 20%, transparent);
+  --color-border-medium: color-mix(in oklch, var(--border) 50%, transparent);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --radius-lg: var(--radius);

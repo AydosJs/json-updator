@@ -7,12 +7,22 @@
     "filesSelected": "Files selected",
     "remove": "Remove",
     "invalidJson": "Invalid JSON",
-    "addMore": "Add more files"
+    "addMore": "Add more files",
+    "start": "Start"
   },
   "example": {
     "title": "Example format",
     "english": "English",
     "russian": "Russian",
     "uzbek": "Uzbek"
+  },
+  "playground": {
+    "title": "Locale table",
+    "key": "Key",
+    "noFiles": "No locale files. Upload JSON files on the home page and click Start.",
+    "goBack": "Go back",
+    "download": "Download",
+    "fileName": "File name",
+    "scrollToTop": "Scroll to top"
   }
 }

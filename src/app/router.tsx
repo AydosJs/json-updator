@@ -2,6 +2,7 @@ import { Outlet, createRootRoute, createRoute, createRouter } from '@tanstack/re
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 import { HomePage } from '@/pages/home'
+import { PlaygroundPage } from '@/pages/playground'
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -18,7 +19,13 @@ const indexRoute = createRoute({
   component: HomePage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute])
+const playgroundRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/playground',
+  component: PlaygroundPage,
+})
+
+const routeTree = rootRoute.addChildren([indexRoute, playgroundRoute])
 
 export const router = createRouter({
   routeTree,
@@ -32,5 +39,8 @@ export const router = createRouter({
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
+  }
+  interface HistoryState {
+    localeFiles?: Array<{ name: string; data: Record<string, unknown> }>
   }
 }
