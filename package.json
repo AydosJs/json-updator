@@ -2,6 +2,7 @@
   "name": "json-update",
   "private": true,
   "type": "module",
+  "packageManager": "bun@1.1.38",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build && tsc",
