@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import App from './App.tsx'
+import { HomePage } from '@/pages/home'
 
-describe('App', () => {
+describe('HomePage', () => {
   test('renders', () => {
-    render(<App />)
-    expect(screen.getByText('Learn React')).toBeDefined()
+    render(<HomePage />)
+    expect(screen.getByText('Localization JSON uploader')).toBeDefined()
   })
 })

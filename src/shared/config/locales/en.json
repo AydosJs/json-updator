@@ -1,0 +1,18 @@
+{
+  "uploader": {
+    "title": "Localization JSON uploader",
+    "description": "Upload multiple localization JSON files (e.g. English, Russian, Uzbek). Each file should contain nested translation keys.",
+    "dropHint": "Drag and drop JSON files here, or click to browse",
+    "browse": "Browse files",
+    "filesSelected": "Files selected",
+    "remove": "Remove",
+    "invalidJson": "Invalid JSON",
+    "addMore": "Add more files"
+  },
+  "example": {
+    "title": "Example format",
+    "english": "English",
+    "russian": "Russian",
+    "uzbek": "Uzbek"
+  }
+}
